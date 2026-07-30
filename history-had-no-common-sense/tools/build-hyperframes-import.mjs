@@ -129,10 +129,48 @@ ${js}
 </html>
 `;
 
+// The importer only accepts URLs on a Claude Design origin — a raw GitHub or
+// Vercel URL is rejected with "not an allowed Claude Design origin" — so the
+// composition also ships as an Artifact-shaped fragment. Artifacts are
+// wrapped in their own doctype/head/body at publish time, so this variant
+// must not carry its own.
+//
+// The Artifact CSP blocks the jsdelivr runtime, so the published page itself
+// will not animate. That is fine and expected: the artifact exists purely as
+// a fetchable URL for the importer, which reads static markup rather than
+// executing it.
+const fragment = `<title>History Had No Common Sense — The Gold Cure</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@hyperframes/core/dist/hyperframe.runtime.iife.js"></script>
+<style>
+/* ---- brand fonts, inlined base64 woff2 ---- */
+${fonts}
+</style>
+<style>
+/* ---- host poses, inlined base64 png ---- */
+${poses}
+</style>
+<style>
+  html, body {
+    width: ${width}px;
+    height: ${height}px;
+    overflow: hidden;
+    margin: 0;
+    background: #f4f1e6;
+  }
+${css}
+</style>
+${root}
+<script>
+${js}
+</script>
+`;
+
 const distDir = path.join(PROJECT, "dist");
 fs.mkdirSync(distDir, { recursive: true });
 const outPath = path.join(distDir, "hyperframes-import.html");
 fs.writeFileSync(outPath, out);
+fs.writeFileSync(path.join(distDir, "hyperframes-artifact.html"), fragment);
 
 console.log(`source id "${sourceId}" -> "main"`);
 console.log(`canvas ${width}x${height}, duration ${duration}s`);
