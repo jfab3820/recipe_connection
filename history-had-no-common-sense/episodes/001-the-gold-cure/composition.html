@@ -16,6 +16,9 @@
 <!-- Fonts are vendored as base64 woff2 (tools/vendor-assets.mjs) so the
      render never depends on network egress or font-load timing. -->
 <link rel="stylesheet" href="../../vendor/brand-fonts.css" />
+<!-- Host poses, cut from the character sheet and inlined as base64
+     (tools/extract_character.py) -->
+<link rel="stylesheet" href="../../brand/poses.css" />
 
 <style>
   :root {
@@ -293,6 +296,38 @@
     opacity: 1;
   }
 
+  /* ---------- the host ----------
+     The Correspondent appears on the beats where a specific pose earns its
+     place, not on every scene. Source art is ~350px tall, so 400px is the
+     ceiling before the linework goes soft. */
+  .host {
+    position: absolute;
+    bottom: 132px;
+    height: 400px;
+  }
+  .host.left {
+    left: 76px;
+  }
+  .host.right {
+    right: 76px;
+  }
+  /* Centred via auto margins rather than translateX(-50%): the timeline
+     animates these elements, and a CSS transform would fight GSAP's. */
+  .host.center {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+  /* Scenes carrying a host reserve his footprint so flex-centred copy
+     lifts clear of him instead of sitting behind him. */
+  .scene.has-host {
+    padding-bottom: 580px;
+  }
+  .face {
+    position: absolute;
+    height: 190px;
+  }
+
   /* ---------- chrome ---------- */
   .mark {
     position: absolute;
@@ -351,13 +386,15 @@
     <h1 id="s1-h">
       The cure for<br />alcoholism<br />was <span class="teal">gold</span>
     </h1>
-    <div class="stamp" id="s1-stamp">0% GOLD</div>
+    <!-- stamp pinned left so it clears the host on the right -->
+    <div class="stamp" id="s1-stamp" style="left: 68px; top: 1235px">0% GOLD</div>
+    <div class="host right pose pose-skeptical" id="s1-host"></div>
   </section>
 
   <!-- 2. THE PITCH -->
   <section
     id="s2"
-    class="scene clip"
+    class="scene clip has-host"
     data-start="6"
     data-duration="18"
     data-track-index="1"
@@ -373,6 +410,7 @@
       <li class="r-item">A tonic every 2 hours</li>
       <li class="r-item">4 weeks &mdash; then you go home fixed</li>
     </ul>
+    <div class="host center pose pose-pointing-at-map" id="s2-host"></div>
   </section>
 
   <!-- 3. THE SCALE -->
@@ -425,12 +463,18 @@
       <div class="figure red">0</div>
       <div class="figure-label">Grams of gold in the medicine</div>
     </div>
+    <!-- reaction shot: he lands the disbelief so the copy doesn't have to -->
+    <div
+      class="face pose pose-face-disbelief"
+      id="s4-face"
+      style="right: 96px; bottom: 300px"
+    ></div>
   </section>
 
   <!-- 5. THE TURN — disease, not moral failing -->
   <section
     id="s5"
-    class="scene clip"
+    class="scene clip has-host"
     data-start="56"
     data-duration="10"
     data-track-index="1"
@@ -442,6 +486,8 @@
     <p class="say muted" id="s5-p" style="margin-top: 54px">
       He was lying about the gold.<br />On this, he was decades early.
     </p>
+    <!-- the finger-up pose is the whole reason this beat works on screen -->
+    <div class="host center pose pose-making-a-point" id="s5-host"></div>
   </section>
 
   <!-- 6. THE TURN — the leagues -->
@@ -465,7 +511,7 @@
   <!-- 7. PAYOFF -->
   <section
     id="s7"
-    class="scene clip"
+    class="scene clip has-host"
     data-start="78"
     data-duration="16"
     data-track-index="1"
@@ -481,6 +527,7 @@
     <h1 id="s7-b" class="teal" style="font-size: 88px; margin-top: 52px">
       It was in the<br />waiting room.
     </h1>
+    <div class="host center pose pose-at-desk" id="s7-host"></div>
   </section>
 
   <!-- ============ track 2 : chrome ============ -->
@@ -531,10 +578,14 @@
         { opacity: 0.92, scale: 1, rotate: -13, duration: 0.42, ease: "back.out(2)" },
         2.5
       )
-      .to("#s1-stamp", { rotate: -11.5, duration: 0.16, ease: "power1.inOut" }, 2.92);
+      .to("#s1-stamp", { rotate: -11.5, duration: 0.16, ease: "power1.inOut" }, 2.92)
+      // host slides up from the lower edge — he arrives after the claim,
+      // so he reads as reacting to it rather than announcing it
+      .from("#s1-host", { opacity: 0, y: 90, duration: 0.6, ease: EASE }, 1.5);
 
     // ---- 2. THE PITCH ----
     tl.from("#s2-card", { opacity: 0, y: 40, rotate: -5, duration: 0.66, ease: EASE }, 6.2)
+      .from("#s2-host", { opacity: 0, y: 90, duration: 0.6, ease: EASE }, 6.6)
       .from(".r-item", { opacity: 0, x: -46, duration: 0.5, stagger: 2.4, ease: EASE }, 10.4);
 
     // ---- 3. THE SCALE ----
@@ -555,13 +606,20 @@
         44.5
       )
       .from("#s4-say", { opacity: 0, y: 26, duration: 0.55, ease: EASE }, 45.6)
-      .from("#s4-zero", { opacity: 0, scale: 0.4, duration: 0.6, ease: "back.out(2.2)" }, 50.8);
+      .from("#s4-zero", { opacity: 0, scale: 0.4, duration: 0.6, ease: "back.out(2.2)" }, 50.8)
+      // the reaction lands a beat after the zero, like a double-take
+      .from(
+        "#s4-face",
+        { opacity: 0, scale: 0.6, rotate: -8, duration: 0.45, ease: "back.out(2)" },
+        51.5
+      );
 
     // ---- 5. THE TURN ----
     tl.from("#s5-k", { opacity: 0, duration: 0.5, ease: EASE }, 56.2)
       // deliberate beat on "Except…" before the reveal
       .from("#s5-h", { opacity: 0, y: 52, duration: 0.75, ease: EASE }, 58.4)
-      .from("#s5-p", { opacity: 0, duration: 0.6, ease: EASE }, 61.4);
+      .from("#s5-p", { opacity: 0, duration: 0.6, ease: EASE }, 61.4)
+      .from("#s5-host", { opacity: 0, y: 90, duration: 0.6, ease: EASE }, 58.8);
 
     // ---- 6. THE LEAGUES ----
     tl.from("#s6-h", { opacity: 0, y: 30, duration: 0.55, ease: EASE }, 66.3)
@@ -579,7 +637,8 @@
     tl.from("#s7-eye", { opacity: 0, duration: 0.5, ease: EASE }, 78.3)
       .from("#s7-p", { opacity: 0, y: 22, duration: 0.6, ease: EASE }, 79.2)
       .from("#s7-a", { opacity: 0, y: 40, duration: 0.7, ease: EASE }, 84.0)
-      .from("#s7-b", { opacity: 0, y: 40, duration: 0.8, ease: EASE }, 87.4);
+      .from("#s7-b", { opacity: 0, y: 40, duration: 0.8, ease: EASE }, 87.4)
+      .from("#s7-host", { opacity: 0, y: 90, duration: 0.7, ease: EASE }, 80.4);
 
     window.__timelines = window.__timelines || {};
     window.__timelines["gold-cure"] = tl;

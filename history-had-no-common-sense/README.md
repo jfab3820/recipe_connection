@@ -17,7 +17,10 @@ episodes/NNN-slug/         one directory per episode
 tools/
   render.mjs               local preview renderer (Chromium + FFmpeg)
   vendor-assets.mjs        vendors GSAP + fonts into vendor/
+  extract_character.py     cuts host poses off the reference sheet
 vendor/                    generated; GSAP and base64 woff2 fonts
+brand/poses/               generated; transparent host pose PNGs
+brand/poses.css            generated; poses inlined as base64
 renders/                   generated; MP4 output (gitignored)
 ```
 
@@ -25,7 +28,7 @@ renders/                   generated; MP4 output (gitignored)
 
 | # | Title | Runtime | Status |
 | --- | --- | --- | --- |
-| 001 | The Gold Cure | ~1:34 | Composition complete, rendered |
+| 001 | The Gold Cure | 1:34 | Visuals final; awaiting VO + music |
 
 ## Setup
 
@@ -34,7 +37,10 @@ npm install playwright gsap ffmpeg-static \
   @fontsource/caveat @fontsource/patrick-hand \
   @fontsource/archivo-black @fontsource/roboto-mono
 
+pip install pillow numpy
+
 node tools/vendor-assets.mjs
+python3 tools/extract_character.py
 ```
 
 `vendor-assets.mjs` inlines the fonts as base64 woff2 and copies GSAP

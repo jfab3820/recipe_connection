@@ -18,6 +18,33 @@ relieved, exasperated
 **Usage:** on-screen host / narrator. He reacts to history, points at maps,
 presents facts. Design stays consistent across every episode.
 
+### Pose assets
+
+`tools/extract_character.py` cuts every pose, expression head, and prop off
+the reference sheet into transparent PNGs in `poses/`, and emits
+`poses.css` with each one inlined as base64:
+
+```html
+<div class="pose pose-making-a-point" style="height: 400px"></div>
+```
+
+Each class carries its own `aspect-ratio`, so set height only.
+
+Source art is roughly 350px tall. **400px is the ceiling** — beyond that the
+hand-drawn linework visibly softens. On a 1920px canvas that reads as a
+host presence at the lower third, which is the intended scale.
+
+Cast him by beat rather than putting him in every scene. Overuse turns a
+host into wallpaper:
+
+| Beat | Pose |
+| --- | --- |
+| Hook | `skeptical` |
+| The pitch | `pointing-at-map`, `side-narration` |
+| The debunk | `face-disbelief` as a reaction cut-in |
+| The turn | `making-a-point` |
+| The payoff | `at-desk`, `front-neutral` |
+
 ## Palette
 
 | Token | Hex | Use |
@@ -29,9 +56,8 @@ presents facts. Design stays consistent across every episode.
 | Paper | `#F4F1E6` | Background, always |
 | Accent red | `#B94A48` | **Debunk beat only** — the thing that's wrong |
 
-> ⚠️ Teal and accent red were read off the character sheet image. If you
-> have the original design file, confirm: teal may be `#3283A6` and red may
-> be `#894A48`. Everything else is unambiguous.
+All six confirmed by reading the swatch labels off the character sheet at
+full resolution — no guesswork remaining.
 
 Red is disciplined on purpose. If red shows up everywhere it stops meaning
 "this is the lie," which is the one job it has.

@@ -83,9 +83,45 @@ each other," and it should be underplayed, not swelled.
   story with no reason to exist, and it punched down at the patients.
 - **V2** — moved the debunk earlier and added the "Except." turn. Better,
   but the ending moralized ("maybe we're not so different today") — cut.
-- **V3 (this)** — hook now front-loads the contradiction inside 6 seconds.
+- **V3** — hook now front-loads the contradiction inside 6 seconds.
   Payoff is concrete rather than a lesson: *syringe vs. waiting room*. The
   host never states the moral, the image carries it.
+- **V4 (this)** — script text unchanged; the Correspondent was added to the
+  composition on five beats. No narration was rewritten to accommodate him,
+  because he should be reacting to the line, not illustrating it.
+
+## Production status
+
+| Element | State |
+| --- | --- |
+| Composition | Complete — 7 scenes, host on 5 beats |
+| Visuals | Rendered, `renders/the-gold-cure.mp4` |
+| Voiceover | **Not recorded** — timings below are the spec |
+| Music | **Not added** |
+
+### Voiceover handoff
+
+The animation is already cut to the timings in this document, so the read
+needs to land on these marks. Total 1:34.
+
+| In | Out | Beat |
+| --- | --- | --- |
+| 0:00 | 0:06 | Hook |
+| 0:06 | 0:24 | The pitch |
+| 0:24 | 0:42 | The scale |
+| 0:42 | 0:56 | The debunk |
+| 0:56 | 1:18 | The turn |
+| 1:18 | 1:34 | Payoff |
+
+Two moments the read must respect:
+
+- **0:56–0:58** — a full beat of silence on "Except." The visual holds for
+  it. Rushing this kills the turn.
+- **1:26 onward** — the last two lines land on separate title cards. Leave
+  air between "in the syringe" and "in the waiting room."
+
+Music should stay under the whole thing and drop out entirely for the
+payoff — the closing line works better dry.
 
 ## Caption / description draft
 

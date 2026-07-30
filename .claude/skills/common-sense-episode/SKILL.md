@@ -87,6 +87,28 @@ Reference: `reference/hyperframes.md`. Core contract:
 - Scene shells cut hard via `tl.set(sel, {opacity:1})` at the in-point and
   `{opacity:0}` at the out-point. Use motion inside a scene, not between.
 
+## Putting the host on screen
+
+`tools/extract_character.py` cuts poses off the reference sheet and emits
+`brand/poses.css` with each inlined as base64. Use:
+
+```html
+<div class="pose pose-making-a-point" style="height: 400px"></div>
+```
+
+Classes carry their own `aspect-ratio` — set height only, and **cap it at
+400px**; the source art is ~350px tall and softens past that.
+
+Cast by beat, don't wallpaper: `skeptical` on the hook, `pointing-at-map`
+or `side-narration` on the pitch, `face-disbelief` as a reaction cut-in on
+the debunk, `making-a-point` on the turn, `at-desk` on the payoff. Leave the
+pure-data scenes (the scale, big counters) hostless — the rhythm of him
+appearing and disappearing is what keeps him from becoming furniture.
+
+Scenes carrying a full-body host need `class="scene has-host"` so the
+copy lifts clear of his footprint. Centre him with auto margins, never
+`translateX(-50%)` — a CSS transform fights GSAP's on the same element.
+
 ## Brand tokens
 
 ```
