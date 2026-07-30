@@ -17,7 +17,14 @@
  *   --to <sec>        end time               (default data-duration)
  *   --scale <n>       resolution multiplier  (default 1)
  *   --contact <path>  write a contact sheet of key frames instead of video
- *   --jpeg            faster, slightly lossy frame capture
+ *   --jpeg            capture frames as JPEG rather than PNG
+ *   --quality <n>     JPEG quality, 1-100        (default 96)
+ *
+ * Use --jpeg for anything full length. Chromium's PNG encoder costs roughly
+ * 0.77s/frame at 1080x1920 versus 0.067s for JPEG — an 11x difference, or
+ * 35 minutes versus 3 for a 94-second episode. The frames are re-encoded to
+ * H.264 regardless, so a high-quality JPEG intermediate is not the thing
+ * that limits output quality.
  *
  * Env:
  *   FFMPEG_BIN   path to an ffmpeg with libx264 (required for mp4 output)
@@ -173,7 +180,9 @@ for (let i = 0; i < total; i++) {
   const t = from + i / fps;
   await seek(t);
   const buf = await page.screenshot(
-    imgType === "jpeg" ? { type: "jpeg", quality: 92 } : { type: "png" }
+    imgType === "jpeg"
+      ? { type: "jpeg", quality: Number(flag("quality", 96)) }
+      : { type: "png" }
   );
   if (!ff.stdin.write(buf)) await once(ff.stdin, "drain");
 
